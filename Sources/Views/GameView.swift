@@ -9,7 +9,7 @@ import SwiftUI
 // directly. `.resizeFill` keeps the scene matched to the view size.
 
 struct GameSKView: UIViewRepresentable {
-    let scene: BrickBreakerScene
+    let scene: CamBreakerScene
 
     func makeUIView(context: Context) -> SKView {
         let view = SKView()
@@ -33,7 +33,7 @@ struct GameView: View {
     @ObservedObject var gameState: GameState
     @Binding var path: NavigationPath
 
-    @State private var scene: BrickBreakerScene?
+    @State private var scene: CamBreakerScene?
     @State private var pausedFromUI = false
     @State private var controlMode: ControlMode
 
@@ -45,6 +45,12 @@ struct GameView: View {
     }
 
     var body: some View {
+        GeometryReader { geo in
+            gameContent(bottomClearance: max(100, geo.size.height * 0.22))
+        }
+    }
+
+    private func gameContent(bottomClearance: CGFloat) -> some View {
         ZStack {
             // Optional live-camera background (behind the transparent scene),
             // dimmed so the bricks stay readable.
@@ -82,18 +88,22 @@ struct GameView: View {
             }
 
             // HUD strip. Everything informational lives in the TOP half —
-            // the bottom 200pt belongs to the paddle and ball alone.
+            // the bottom belongs to the paddle and ball alone.
             VStack(spacing: 0) {
                 hudBar
                 messageBanner
                 Spacer()
                 if gameState.phase == .serving {
                     serveHint
+                        .padding(.bottom, bottomClearance)
+                } else {
+                    Spacer()
+                        .frame(height: bottomClearance)
                 }
-                Spacer()
-                    .frame(height: 200) // paddle zone stays clear
             }
             .allowsHitTesting(false)
+
+            pauseOverlay
 
             if pausedFromUI { pauseMenu }
             if gameState.phase == .levelClear { levelClearCard }
@@ -112,7 +122,7 @@ struct GameView: View {
         }
         .onAppear {
             if scene == nil {
-                let s = BrickBreakerScene(size: UIScreen.main.bounds.size)
+                let s = CamBreakerScene(size: UIScreen.main.bounds.size)
                 s.gameState = gameState
                 s.cameraLink = camera
                 s.controlMode = controlMode
@@ -156,23 +166,35 @@ struct GameView: View {
                 .font(.system(.headline, design: .monospaced))
             Spacer()
             LivesView(lives: gameState.lives)
-            Button {
-                pausedFromUI = true
-                scene?.isPaused = true
-                gameState.phase = .paused
-            } label: {
-                Image(systemName: "pause.fill")
-                    .foregroundStyle(.white)
-                    .padding(10)
-                    .background(Color.white.opacity(0.15))
-                    .clipShape(Circle())
-            }
         }
         .foregroundStyle(.white)
         .padding(.horizontal, 14)
         .padding(.top, 10)
         .padding(.bottom, 6)
         .background(Color.black.opacity(gameState.useCameraBackground ? 0.45 : 0.85))
+    }
+
+    /// Pause lives outside the touch-transparent HUD so it stays tappable.
+    private var pauseOverlay: some View {
+        VStack {
+            HStack {
+                Spacer()
+                Button {
+                    pausedFromUI = true
+                    scene?.isPaused = true
+                    gameState.phase = .paused
+                } label: {
+                    Image(systemName: "pause.fill")
+                        .foregroundStyle(.white)
+                        .padding(10)
+                        .background(Color.white.opacity(0.15))
+                        .clipShape(Circle())
+                }
+            }
+            .padding(.horizontal, 12)
+            .padding(.top, 10)
+            Spacer()
+        }
     }
 
     private var messageBanner: some View {

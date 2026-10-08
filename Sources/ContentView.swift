@@ -6,7 +6,8 @@ struct ContentView: View {
     @State private var lastPressMessage = "No press yet"
 
     var body: some View {
-        VStack(spacing: 12) {
+        ScrollView {
+            VStack(spacing: 12) {
             // Small live preview — proves the session is active and holding Camera Control.
             CameraPreviewView(session: camera.session)
                 .frame(height: 160)
@@ -84,9 +85,11 @@ struct ContentView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 8))
             }
 
-            Spacer()
+            }
+            .padding()
+            .frame(maxWidth: 560)
+            .frame(maxWidth: .infinity)
         }
-        .padding()
         .onCameraCaptureEvent { _ in
             lastPressMessage = "press began: \(Date().formatted(date: .omitted, time: .standard))"
             camera.logPress(phase: "began")

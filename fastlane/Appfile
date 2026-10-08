@@ -1,4 +1,4 @@
 # frozen_string_literal: true
 
-app_identifier("com.ebenfeld.brickbreaker-camera")
+app_identifier("com.ebenfeld.cambreaker")
 team_id("75M38Z9JBF")

@@ -1,0 +1,389 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		08F08D1958D2F2BBE510B1FD /* Levels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85345563A3DD49C55B444D09 /* Levels.swift */; };
+		10F2D852E5F3D54A0B0333AB /* BrickBreakerTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B367C8915031C0B53E060C49 /* BrickBreakerTypes.swift */; };
+		171FA585E3C2CE629C0DE28E /* BrickBreakerScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC2538127A214C4C5384AF5 /* BrickBreakerScene.swift */; };
+		1FB378DBC2589D3E89899DF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 54A16584B80D66501E78D371 /* Assets.xcassets */; };
+		245ACA3296B2B713C4E28644 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E62B4662C75E058B29F106 /* GameState.swift */; };
+		26C746190F3FBD4ACA28E1BE /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 410A5C73A019784D2CBB686D /* PrivacyInfo.xcprivacy */; };
+		337CF0BD0FE52C67EA289E45 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EEF6606683578A5F0F5E8E /* GameView.swift */; };
+		45B756202C6EFAC425F2B3ED /* CamBreakerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CE9084C7F08C486998BC083 /* CamBreakerApp.swift */; };
+		5129049CAB9D8D98B4C8525E /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799C76506B1630CCE3DED4F5 /* SoundManager.swift */; };
+		63587B18F1F65C9B88B342D8 /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6028452509A35BC107006058 /* CameraPreviewView.swift */; };
+		792E4673F3506054C3D04059 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FEFE5AAD6BE7A3C26512C34 /* MenuView.swift */; };
+		7ADEAA500C141DFA61389C51 /* HowToPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353A4F885D11EEEF60A082AE /* HowToPlayView.swift */; };
+		D419652AAB210E6CB40FCFE4 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D354DB400754D722815A98 /* CameraManager.swift */; };
+		E6FDBB8D371AD1E97B2184B8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68F77D172BE0CA57D713BED /* ContentView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		27EEF6606683578A5F0F5E8E /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
+		353A4F885D11EEEF60A082AE /* HowToPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayView.swift; sourceTree = "<group>"; };
+		3AC2538127A214C4C5384AF5 /* BrickBreakerScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrickBreakerScene.swift; sourceTree = "<group>"; };
+		3CE9084C7F08C486998BC083 /* CamBreakerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CamBreakerApp.swift; sourceTree = "<group>"; };
+		410A5C73A019784D2CBB686D /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		54A16584B80D66501E78D371 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		6028452509A35BC107006058 /* CameraPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
+		61D354DB400754D722815A98 /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
+		63E62B4662C75E058B29F106 /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
+		799C76506B1630CCE3DED4F5 /* SoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
+		7FEFE5AAD6BE7A3C26512C34 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		85345563A3DD49C55B444D09 /* Levels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Levels.swift; sourceTree = "<group>"; };
+		AD3399A6E2BE6FC1EB6D138B /* CamBreaker.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = CamBreaker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B367C8915031C0B53E060C49 /* BrickBreakerTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrickBreakerTypes.swift; sourceTree = "<group>"; };
+		B68F77D172BE0CA57D713BED /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		388A8C1D503F8B364E151B6F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AD3399A6E2BE6FC1EB6D138B /* CamBreaker.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BA9F3DB31E7AAFC75F2BECE5 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				54A16584B80D66501E78D371 /* Assets.xcassets */,
+				3CE9084C7F08C486998BC083 /* CamBreakerApp.swift */,
+				61D354DB400754D722815A98 /* CameraManager.swift */,
+				6028452509A35BC107006058 /* CameraPreviewView.swift */,
+				B68F77D172BE0CA57D713BED /* ContentView.swift */,
+				410A5C73A019784D2CBB686D /* PrivacyInfo.xcprivacy */,
+				DD647E90D04BF5FF2835F012 /* Game */,
+				E917D8F6CEEE93466C5CCA64 /* Views */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		DD647E90D04BF5FF2835F012 /* Game */ = {
+			isa = PBXGroup;
+			children = (
+				3AC2538127A214C4C5384AF5 /* BrickBreakerScene.swift */,
+				B367C8915031C0B53E060C49 /* BrickBreakerTypes.swift */,
+				63E62B4662C75E058B29F106 /* GameState.swift */,
+				85345563A3DD49C55B444D09 /* Levels.swift */,
+				799C76506B1630CCE3DED4F5 /* SoundManager.swift */,
+			);
+			path = Game;
+			sourceTree = "<group>";
+		};
+		E917D8F6CEEE93466C5CCA64 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				27EEF6606683578A5F0F5E8E /* GameView.swift */,
+				353A4F885D11EEEF60A082AE /* HowToPlayView.swift */,
+				7FEFE5AAD6BE7A3C26512C34 /* MenuView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E9518D5B5395EAC3152A32E8 = {
+			isa = PBXGroup;
+			children = (
+				BA9F3DB31E7AAFC75F2BECE5 /* Sources */,
+				388A8C1D503F8B364E151B6F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3C291B5327A4C1A179CDEB16 /* CamBreaker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 50C1E8CA0FBFF9DCFD8F4F31 /* Build configuration list for PBXNativeTarget "CamBreaker" */;
+			buildPhases = (
+				EA277EE4A123B3A2D8A4BF06 /* Sources */,
+				74516BEE0493C55D40AFA28A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CamBreaker;
+			packageProductDependencies = (
+			);
+			productName = CamBreaker;
+			productReference = AD3399A6E2BE6FC1EB6D138B /* CamBreaker.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		594EBA106D89CC9ABD9BA29A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					3C291B5327A4C1A179CDEB16 = {
+						DevelopmentTeam = 75M38Z9JBF;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = AAC24FDE66EBF60ECFE05CFC /* Build configuration list for PBXProject "CamBreaker" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = E9518D5B5395EAC3152A32E8;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 388A8C1D503F8B364E151B6F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3C291B5327A4C1A179CDEB16 /* CamBreaker */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		74516BEE0493C55D40AFA28A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1FB378DBC2589D3E89899DF2 /* Assets.xcassets in Resources */,
+				26C746190F3FBD4ACA28E1BE /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EA277EE4A123B3A2D8A4BF06 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				171FA585E3C2CE629C0DE28E /* BrickBreakerScene.swift in Sources */,
+				10F2D852E5F3D54A0B0333AB /* BrickBreakerTypes.swift in Sources */,
+				45B756202C6EFAC425F2B3ED /* CamBreakerApp.swift in Sources */,
+				D419652AAB210E6CB40FCFE4 /* CameraManager.swift in Sources */,
+				63587B18F1F65C9B88B342D8 /* CameraPreviewView.swift in Sources */,
+				E6FDBB8D371AD1E97B2184B8 /* ContentView.swift in Sources */,
+				245ACA3296B2B713C4E28644 /* GameState.swift in Sources */,
+				337CF0BD0FE52C67EA289E45 /* GameView.swift in Sources */,
+				7ADEAA500C141DFA61389C51 /* HowToPlayView.swift in Sources */,
+				08F08D1958D2F2BBE510B1FD /* Levels.swift in Sources */,
+				792E4673F3506054C3D04059 /* MenuView.swift in Sources */,
+				5129049CAB9D8D98B4C8525E /* SoundManager.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		4EFE297414A87F5AD6CFF230 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		A730E4C35699F986C24772B7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		AE64D708B43E7DA3FB8B9901 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 75M38Z9JBF;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = CamBreaker;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera is required so the Camera Control slider stays active while you steer the paddle.";
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = (
+					UIInterfaceOrientationPortrait,
+					UIInterfaceOrientationLandscapeLeft,
+					UIInterfaceOrientationLandscapeRight,
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ebenfeld.cambreaker;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		B0C9CDFE5F767BBC073B5239 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 75M38Z9JBF;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = CamBreaker;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera is required so the Camera Control slider stays active while you steer the paddle.";
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = (
+					UIInterfaceOrientationPortrait,
+					UIInterfaceOrientationLandscapeLeft,
+					UIInterfaceOrientationLandscapeRight,
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ebenfeld.cambreaker;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		50C1E8CA0FBFF9DCFD8F4F31 /* Build configuration list for PBXNativeTarget "CamBreaker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B0C9CDFE5F767BBC073B5239 /* Debug */,
+				AE64D708B43E7DA3FB8B9901 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		AAC24FDE66EBF60ECFE05CFC /* Build configuration list for PBXProject "CamBreaker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A730E4C35699F986C24772B7 /* Debug */,
+				4EFE297414A87F5AD6CFF230 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 594EBA106D89CC9ABD9BA29A /* Project object */;
+}

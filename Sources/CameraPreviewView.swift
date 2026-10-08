@@ -9,20 +9,56 @@ struct CameraPreviewView: UIViewRepresentable {
         let view = PreviewUIView()
         view.previewLayer.session = session
         view.previewLayer.videoGravity = .resizeAspectFill
-        // Pin the feed upright for our portrait-locked game.
-        if let connection = view.previewLayer.connection,
-           connection.isVideoOrientationSupported {
-            connection.videoOrientation = .portrait
-        }
+        view.updateVideoOrientation()
         return view
     }
 
-    func updateUIView(_ uiView: PreviewUIView, context: Context) {}
+    func updateUIView(_ uiView: PreviewUIView, context: Context) {
+        uiView.updateVideoOrientation()
+    }
 
     final class PreviewUIView: UIView {
         override class var layerClass: AnyClass { AVCaptureVideoPreviewLayer.self }
         var previewLayer: AVCaptureVideoPreviewLayer {
             layer as! AVCaptureVideoPreviewLayer
+        }
+
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+            UIDevice.current.beginGeneratingDeviceOrientationNotifications()
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(orientationChanged),
+                name: UIDevice.orientationDidChangeNotification,
+                object: nil)
+        }
+
+        @available(*, unavailable)
+        required init?(coder _: NSCoder) { fatalError() }
+
+        deinit {
+            NotificationCenter.default.removeObserver(self)
+        }
+
+        @objc private func orientationChanged() {
+            updateVideoOrientation()
+        }
+
+        /// Keeps the feed upright as the phone rotates (the game supports
+        /// portrait + landscape; the sensor doesn't rotate itself).
+        func updateVideoOrientation() {
+            guard let connection = previewLayer.connection,
+                  connection.isVideoOrientationSupported else { return }
+            switch UIDevice.current.orientation {
+            case .landscapeLeft:
+                connection.videoOrientation = .landscapeRight
+            case .landscapeRight:
+                connection.videoOrientation = .landscapeLeft
+            case .portraitUpsideDown:
+                connection.videoOrientation = .portraitUpsideDown
+            default:
+                connection.videoOrientation = .portrait
+            }
         }
     }
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the BrickBreaker Camera Control Edition app icon set.
+"""Generate the CamBreaker Camera Control Edition app icon set.
 
 Design: midnight background, three rows of glossy Breakout bricks,
 a white paddle + glowing ball, and a cyan Camera Control pill on the

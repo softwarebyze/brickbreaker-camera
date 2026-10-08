@@ -1,4 +1,4 @@
-BrickBreaker is back — steered by your iPhone's Camera Control button.
+CamBreaker is back — steered by your iPhone's Camera Control button.
 
 The breakout classic you grew up with on BlackBerry, rebuilt for iPhone with a twist: slide your finger along the Camera Control to move the paddle, just like the old trackwheel. Light-press to open the overlay, pick Paddle, and swipe. Tap the screen — or click the Camera Control — to launch the ball and fire, exactly like the old SPACE key.
 

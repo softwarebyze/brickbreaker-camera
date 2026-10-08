@@ -14,15 +14,13 @@ struct MenuView: View {
 
     var body: some View {
         NavigationStack(path: $path) {
-            ZStack {
-                Color.black.ignoresSafeArea()
-                VStack(spacing: 14) {
-                    Spacer(minLength: 40)
+            ZStack {Color.black.ignoresSafeArea()
+                ScrollView {
+                    VStack(spacing: 14) {
+                        BrandArt()
+                            .padding(.top, 40)
 
-                    // Brand block: brick rows + paddle + ball, drawn in SwiftUI.
-                    BrandArt()
-
-                    Text("BRICKBREAKER")
+                    Text("CAMBREAKER")
                         .font(.system(size: 38, weight: .black, design: .monospaced))
                         .foregroundStyle(.white)
                     Text("Camera Control Edition")
@@ -68,7 +66,10 @@ struct MenuView: View {
                     Text("3 lives • 34 levels • gun beats silver")
                         .font(.caption)
                         .foregroundStyle(.secondary)
-                    Spacer()
+                        .padding(.bottom, 30)
+                }
+                .frame(maxWidth: 560)
+                .frame(maxWidth: .infinity)
                 }
             }
             .navigationDestination(for: Route.self) { route in

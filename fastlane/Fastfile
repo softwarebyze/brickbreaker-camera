@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# BrickBreaker release pipeline.
+# CamBreaker release pipeline.
 #
 # Auth: reuses the existing App Store Connect API key on this machine.
 # ASC_API_KEY_PATH overrides the default (a JSON file with
@@ -30,7 +30,7 @@ platform :ios do
     api_key = asc_api_key
     pilot(
       api_key: api_key,
-      ipa: File.expand_path("../build/export/BrickBreakerCamera.ipa", __dir__),
+      ipa: File.expand_path("../build/export/CamBreaker.ipa", __dir__),
       changelog: File.read(File.expand_path("../fastlane/metadata/en-US/release_notes.txt", __dir__)),
       distribute_external: false,
       skip_waiting_for_build_processing: false

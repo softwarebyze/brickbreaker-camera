@@ -1,4 +1,4 @@
-# BrickBreaker — Camera Control Edition
+# CamBreaker — Camera Control Edition
 
 The BlackBerry classic, reborn on iPhone — steered by the **Camera Control button**.
 
@@ -23,14 +23,14 @@ old SPACE key.
 
 ```
 Sources/
-  BrickBreakerCameraApp.swift   App entry → MenuView
+  CamBreakerApp.swift   App entry → MenuView
   ContentView.swift             Camera Control paddle test screen
   CameraManager.swift           AVCaptureSession + custom Paddle slider
   CameraPreviewView.swift       Live camera preview (game background)
   Game/
-    BrickBreakerTypes.swift     Bricks, capsules, scoring, control modes
+    CamBreakerTypes.swift     Bricks, capsules, scoring, control modes
     Levels.swift                All 34 boards (capsule slots fixed, types random)
-    BrickBreakerScene.swift     SpriteKit simulation + original game rules
+    CamBreakerScene.swift     SpriteKit simulation + original game rules
     GameState.swift             HUD-observable score/lives/level
     SoundManager.swift          Synthesized retro sound effects
   Views/
@@ -46,7 +46,7 @@ Requirements: Xcode 26+, iPhone 16 or newer (for Camera Control), iOS 18+.
 # Generate the Xcode project (checked in via project.yml + xcodegen)
 xcodegen generate
 # Open and Run on your device:
-open BrickBreakerCamera.xcodeproj
+open CamBreaker.xcodeproj
 ```
 
 Camera Control only exists on physical iPhone 16+ hardware — on the

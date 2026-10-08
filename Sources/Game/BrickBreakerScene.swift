@@ -1,6 +1,6 @@
 import SpriteKit
 
-// MARK: - BrickBreakerScene
+// MARK: - CamBreakerScene
 //
 // A faithful recreation of the BlackBerry original's rules:
 //
@@ -21,7 +21,7 @@ import SpriteKit
 // Physics is hand-rolled (swept in small substeps) rather than SKPhysics:
 // deterministic bounces and zero tunneling at high speed.
 
-final class BrickBreakerScene: SKScene {
+final class CamBreakerScene: SKScene {
 
     // MARK: Tunables
 
@@ -198,12 +198,19 @@ final class BrickBreakerScene: SKScene {
         playWidth = w
         let side: CGFloat = 10
         brickGap = 3
-        brickW = (playWidth - side * 2 - CGFloat(Tune.cols - 1) * brickGap) / CGFloat(Tune.cols)
-        brickH = 20
-        gridOriginX = side
+        // Cap brick width so landscape doesn't make silly-wide bricks, then
+        // center the grid. Portrait phones are unaffected by the cap.
+        let naturalW = (w - side * 2 - CGFloat(Tune.cols - 1) * brickGap) / CGFloat(Tune.cols)
+        brickW = min(naturalW, 52)
+        let gridW = CGFloat(Tune.cols) * brickW + CGFloat(Tune.cols - 1) * brickGap
+        gridOriginX = (w - gridW) / 2
+        // Fit up to 9 rows between the HUD and the paddle zone. Portrait
+        // keeps classic 20pt bricks; short landscape screens shrink them.
+        let pitch = min(23, max(15, (h - 150 - 130) / 9))
+        brickH = max(12, pitch - brickGap)
         gridTopY = h - 150 // room for the SwiftUI HUD strip
         paddleY = max(90, h * 0.12)
-        paddleW = max(64, playWidth / 5.6)
+        paddleW = max(64, min(playWidth / 5.6, 110))
         paddleH = 14
         ballR = 7
         paddleX = playWidth / 2

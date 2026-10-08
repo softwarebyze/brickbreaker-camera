@@ -1,6 +1,6 @@
 import Foundation
 
-// MARK: - Shared BrickBreaker model
+// MARK: - Shared CamBreaker model
 //
 // Faithful to the BlackBerry original:
 //  - 34 boards that loop; later loops descend faster.

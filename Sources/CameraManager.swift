@@ -15,7 +15,7 @@ final class CameraManager: NSObject, ObservableObject {
     @Published var cameraPosition: AVCaptureDevice.Position = .back
 
     let session = AVCaptureSession()
-    private let sessionQueue = DispatchQueue(label: "com.ebenfeld.brickbreaker-camera.session")
+    private let sessionQueue = DispatchQueue(label: "com.ebenfeld.cambreaker.session")
     private var paddleSlider: AVCaptureSlider?
 
     override init() {

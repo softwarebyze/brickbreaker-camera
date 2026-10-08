@@ -8,11 +8,22 @@ import Foundation
 
 @MainActor
 final class GameState: ObservableObject {
+    /// One-time carry-over from the pre-rename high-score keys.
+    static func migratedScore(newKey: String, oldKey: String) -> Int {
+        let current = UserDefaults.standard.integer(forKey: newKey)
+        if current != 0 { return current }
+        let legacy = UserDefaults.standard.integer(forKey: oldKey)
+        if legacy != 0 {
+            UserDefaults.standard.set(legacy, forKey: newKey)
+        }
+        return legacy
+    }
+
     @Published var score: Int = 0
     @Published var lives: Int = 3
     @Published var level: Int = 1
-    @Published var highScore: Int = UserDefaults.standard.integer(forKey: "BrickBreakerHighScore")
-    @Published var cameraBest: Int = UserDefaults.standard.integer(forKey: "BrickBreakerCameraBest")
+    @Published var highScore: Int = GameState.migratedScore(newKey: "CamBreakerHighScore", oldKey: "BrickBreakerHighScore")
+    @Published var cameraBest: Int = GameState.migratedScore(newKey: "CamBreakerBest", oldKey: "BrickBreakerCameraBest")
     @Published var highScoreAtRunStart: Int = 0
     @Published var cameraBestAtRunStart: Int = 0
     /// True while the run still counts as camera-slider-only: camera steering
@@ -39,12 +50,12 @@ final class GameState: ObservableObject {
         score += points
         if score > highScore {
             highScore = score
-            UserDefaults.standard.set(score, forKey: "BrickBreakerHighScore")
+            UserDefaults.standard.set(score, forKey: "CamBreakerHighScore")
         }
         // Bank the purist board live: only while the run still qualifies.
         if pureCameraRun && cameraSteering && score > cameraBest {
             cameraBest = score
-            UserDefaults.standard.set(score, forKey: "BrickBreakerCameraBest")
+            UserDefaults.standard.set(score, forKey: "CamBreakerBest")
         }
     }
 

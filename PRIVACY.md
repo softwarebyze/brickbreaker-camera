@@ -1,10 +1,10 @@
-# Privacy Policy — BrickBreaker Camera Control Edition
+# Privacy Policy — CamBreaker Camera Control Edition
 
 Last updated: October 2026.
 
 **We collect nothing.**
 
-BrickBreaker does not collect, transmit, store, or share any personal data.
+CamBreaker does not collect, transmit, store, or share any personal data.
 There are no accounts, no analytics, no advertising, and no third-party SDKs.
 
 - **Camera:** the camera runs a local live preview so the iPhone Camera
@@ -14,4 +14,4 @@ There are no accounts, no analytics, no advertising, and no third-party SDKs.
 - **No tracking:** no cross-app tracking, no identifiers, no network calls
   of any kind. The game works fully offline.
 
-Contact: https://github.com/softwarebyze/brickbreaker-camera
+Contact: https://github.com/softwarebyze/cambreaker
