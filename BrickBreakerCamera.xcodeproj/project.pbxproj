@@ -13,6 +13,7 @@
 		44F4F72F6214043CD8665CBC /* BrickBreakerCameraApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578022F604C469F85E7C34F5 /* BrickBreakerCameraApp.swift */; };
 		5DAB0C804C505138AE630AF9 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA270D9873769FF5600EE1D /* GameView.swift */; };
 		64E71E77318EDC22A00DA3C8 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACA3119946A37EA13872A8B2 /* MenuView.swift */; };
+		6E3D9B390E5F189FACBF21F1 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 65AC3FACEC191E08951A3685 /* PrivacyInfo.xcprivacy */; };
 		7169099800EF596BC918C42C /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668076C29656BFF9004A45DF /* SoundManager.swift */; };
 		88351CAE852B635629EF506D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6E8F6B6303B01FF56BC1D41F /* Assets.xcassets */; };
 		CB97D586D2E2F6F3DA12BDFF /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDFDEA684FE06AAD2272506 /* GameState.swift */; };
@@ -30,6 +31,7 @@
 		506B545B29B0572BE7312E66 /* BrickBreakerCamera.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = BrickBreakerCamera.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		578022F604C469F85E7C34F5 /* BrickBreakerCameraApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrickBreakerCameraApp.swift; sourceTree = "<group>"; };
 		5FF85FFBE3AC98DD6B0949A4 /* HowToPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayView.swift; sourceTree = "<group>"; };
+		65AC3FACEC191E08951A3685 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		668076C29656BFF9004A45DF /* SoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
 		6E8F6B6303B01FF56BC1D41F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6FA270D9873769FF5600EE1D /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 				954608E65641E5A4AEA0BF0F /* CameraManager.swift */,
 				4491C7AF0A30AD2E0BBBF48E /* CameraPreviewView.swift */,
 				9E8D2990680F9EFD17074A50 /* ContentView.swift */,
+				65AC3FACEC191E08951A3685 /* PrivacyInfo.xcprivacy */,
 				2085CBE1187A3CBCE7A12616 /* Game */,
 				74F3DC35EE73D0B4DBC6EF94 /* Views */,
 			);
@@ -153,6 +156,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				88351CAE852B635629EF506D /* Assets.xcassets in Resources */,
+				6E3D9B390E5F189FACBF21F1 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,9 +253,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 75M38Z9JBF;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = BrickBreaker;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera is required so the Camera Control slider stays active while you steer the paddle.";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
@@ -259,6 +265,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ebenfeld.brickbreaker-camera";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -326,9 +333,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 75M38Z9JBF;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = BrickBreaker;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera is required so the Camera Control slider stays active while you steer the paddle.";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
@@ -336,6 +345,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ebenfeld.brickbreaker-camera";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;

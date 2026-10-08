@@ -18,4 +18,7 @@ targets:
         INFOPLIST_KEY_NSCameraUsageDescription: Camera is required so the Camera Control slider stays active while you steer the paddle.
         INFOPLIST_KEY_CFBundleDisplayName: BrickBreaker
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: NO
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        MARKETING_VERSION: 1.0.0
+        CURRENT_PROJECT_VERSION: 1

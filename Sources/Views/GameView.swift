@@ -56,11 +56,18 @@ struct GameView: View {
                     .ignoresSafeArea()
             }
 
-            // HUD strip
+            // HUD strip. Everything informational lives in the TOP half —
+            // the bottom 200pt belongs to the paddle and ball alone.
             VStack(spacing: 0) {
                 hudBar
+                steeringLine
+                messageBanner
                 Spacer()
-                bannerAndHints
+                if gameState.phase == .serving {
+                    serveHint
+                }
+                Spacer()
+                    .frame(height: 200) // paddle zone stays clear
             }
             .allowsHitTesting(false)
 
@@ -100,6 +107,12 @@ struct GameView: View {
         .onChange(of: controlMode) { _, mode in
             scene?.controlMode = mode
             scene?.cameraPaddle01 = mode == .cameraControl ? CGFloat(camera.paddlePosition) : nil
+        }
+        .onChange(of: camera.controlsActive) { _, active in
+            if active {
+                gameState.flash("Camera Control linked — swipe!")
+                SoundManager.shared.play(.capsule)
+            }
         }
         .onChange(of: gameState.useCameraBackground) { _, v in
             scene?.useCameraBackground = v
@@ -145,7 +158,28 @@ struct GameView: View {
         .padding(.top, 110)
     }
 
-    private var bannerAndHints: some View {
+    /// Tiny live link readout: proves Camera Control swipes reach the game.
+    private var steeringLine: some View {
+        Group {
+            switch controlMode {
+            case .cameraControl:
+                let secs = max(0, Date().timeIntervalSince(camera.lastSliderEvent))
+                let live = secs < 86400 && camera.lastSliderEvent != .distantPast
+                Text(live
+                     ? "📷 swipe \(String(format: "%.2f", camera.paddlePosition)) • last swipe \(Int(secs))s ago"
+                     : "📷 swipe \(String(format: "%.2f", camera.paddlePosition)) • light-press Camera Control, pick Paddle, then swipe")
+                    .font(.caption2)
+                    .foregroundStyle(live ? .green : .white.opacity(0.65))
+            case .touch:
+                Text("Steering: touch drag")
+                    .font(.caption2)
+                    .foregroundStyle(.white.opacity(0.65))
+            }
+        }
+        .padding(.top, 2)
+    }
+
+    private var messageBanner: some View {
         VStack(spacing: 8) {
             if let msg = gameState.message {
                 Text(msg)
@@ -158,32 +192,23 @@ struct GameView: View {
                     .transition(.scale)
             }
             bonusPills
-            if gameState.phase == .serving {
-                Text(controlMode == .cameraControl
-                     ? "Swipe the Camera Control to aim — tap to launch"
-                     : "Drag to aim — tap to launch")
-                    .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.85))
-                    .padding(.horizontal, 14)
-                    .padding(.vertical, 6)
-                    .background(Color.white.opacity(0.15))
-                    .clipShape(Capsule())
-            }
-            Text(cameraHint)
-                .font(.caption2)
-                .foregroundStyle(.white.opacity(0.6))
-                .padding(.bottom, 24)
         }
+        .padding(.top, 6)
         .animation(.easeInOut, value: gameState.message)
     }
 
-    private var cameraHint: String {
-        switch controlMode {
-        case .cameraControl:
-            return "Steering: Camera Control swipe (\(String(format: "%.2f", camera.paddlePosition)))"
-        case .touch:
-            return "Steering: touch drag"
-        }
+    private var serveHint: some View {
+        Text(controlMode == .cameraControl
+             ? "Light-press Camera Control → pick Paddle → swipe to aim. Tap to launch."
+             : "Drag to aim — tap to launch")
+            .font(.subheadline)
+            .foregroundStyle(.white.opacity(0.9))
+            .multilineTextAlignment(.center)
+            .padding(.horizontal, 14)
+            .padding(.vertical, 8)
+            .background(Color.white.opacity(0.15))
+            .clipShape(Capsule())
+            .padding(.horizontal, 30)
     }
 
     @ViewBuilder

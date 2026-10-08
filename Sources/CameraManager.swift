@@ -11,6 +11,7 @@ final class CameraManager: NSObject, ObservableObject {
     @Published var controlsActive: Bool = false
     @Published var supportsControls: Bool = false
     @Published var eventLog: [String] = []
+    @Published var lastSliderEvent: Date = .distantPast
 
     let session = AVCaptureSession()
     private let sessionQueue = DispatchQueue(label: "com.ebenfeld.brickbreaker-camera.session")
@@ -94,6 +95,7 @@ final class CameraManager: NSObject, ObservableObject {
                     slider.setActionQueue(self.sessionQueue) { [weak self] newValue in
                         Task { @MainActor in
                             self?.paddlePosition = newValue
+                            self?.lastSliderEvent = Date()
                             self?.appendLog("slider → \(String(format: "%.3f", newValue))")
                         }
                     }
