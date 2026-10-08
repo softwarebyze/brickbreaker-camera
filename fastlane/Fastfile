@@ -1,0 +1,65 @@
+# frozen_string_literal: true
+
+# BrickBreaker release pipeline.
+#
+# Auth: reuses the existing App Store Connect API key on this machine.
+# ASC_API_KEY_PATH overrides the default (a JSON file with
+# key_id / issuer_id / key, same shape as other projects on this Mac).
+# The .p8 secret itself is NEVER copied into this repo.
+
+require "json"
+
+default_platform(:ios)
+
+def asc_api_key
+  key_path = ENV["ASC_API_KEY_PATH"] ||
+             "/Users/zackebenfeld/Projects/Backgammon-Mastermind/.cache/asc-api-key.json"
+  data = JSON.parse(File.read(key_path))
+  app_store_connect_api_key(
+    key_id: data.fetch("key_id"),
+    issuer_id: data.fetch("issuer_id"),
+    key_content: data.fetch("key"),
+    duration: data["duration"] || 1200,
+    in_house: data["in_house"] || false
+  )
+end
+
+platform :ios do
+  desc "Upload the store IPA to TestFlight (internal testers, no review)"
+  lane :beta do
+    api_key = asc_api_key
+    pilot(
+      api_key: api_key,
+      ipa: File.expand_path("../build/export/BrickBreakerCamera.ipa", __dir__),
+      changelog: File.read(File.expand_path("../fastlane/metadata/en-US/release_notes.txt", __dir__)),
+      distribute_external: false,
+      skip_waiting_for_build_processing: false
+    )
+  end
+
+  desc "Upload listing + screenshots and submit 1.0 for App Store review"
+  lane :release do
+    api_key = asc_api_key
+    deliver(
+      api_key: api_key,
+      force: true,
+      metadata_path: File.expand_path("../fastlane/metadata", __dir__),
+      screenshots_path: File.expand_path("../fastlane/screenshots", __dir__),
+      overwrite_screenshots: true,
+      submit_for_review: true,
+      automatic_release: false,
+      submission_information: {
+        add_id_info_uses_idfa: false,
+        export_compliance_uses_encryption: false,
+        content_rights_has_rights: true,
+        content_rights_contains_third_party_content: false
+      },
+      review_information: {
+        first_name: "Zachary",
+        last_name: "Ebenfeld",
+        email: "zackebenfeld@gmail.com"
+      },
+      app_rating_config_path: File.expand_path("../fastlane/rating.json", __dir__)
+    )
+  end
+end

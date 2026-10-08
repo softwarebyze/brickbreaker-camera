@@ -1,0 +1,15 @@
+BrickBreaker is back — steered by your iPhone's Camera Control button.
+
+The breakout classic you grew up with on BlackBerry, rebuilt for iPhone with a twist: slide your finger along the Camera Control to move the paddle, just like the old trackwheel. Light-press to open the overlay, pick Paddle, and swipe. Tap the screen — or click the Camera Control — to launch the ball and fire, exactly like the old SPACE key.
+
+FAITHFUL TO THE ORIGINAL
+• 34 boards across ever-faster loops. Green falls in one hit, blue in two, orange in three, red in four — and silver only falls to the Gun.
+• All 10 original capsules: Bomb, Catch, Flip, Gun, Laser, Life, Long, Multi, Slow, Wrap, with the original replacement rules.
+• The original scoring: 10 points per brick hit, 50 per capsule, bricks that sink as you play, and the famous slow-fast-slow ball.
+
+PROVE IT WITH THE SLIDER
+• A separate 📷 leaderboard tracks your best score steered with the Camera Control slider only — one touch-drag and the run no longer counts.
+
+BUILT FOR IPHONE
+• Optional live camera background (front or back), a built-in Camera Control test screen, and retro bleeps synthesized on-device.
+• Free, no ads, no accounts, works offline, and collects zero data.

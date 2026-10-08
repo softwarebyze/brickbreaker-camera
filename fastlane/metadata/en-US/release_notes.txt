@@ -1,0 +1,1 @@
+First public release: 34 faithful boards, all 10 original capsules, Camera Control slider steering with tap-to-fire, camera-only leaderboard, and front/back camera backgrounds.
