@@ -280,6 +280,16 @@ struct GameView: View {
             settingRow(label: "Camera background") {
                 Toggle("", isOn: $gameState.useCameraBackground)
             }
+            settingRow(label: "Camera") {
+                Picker("", selection: Binding(
+                    get: { camera.cameraPosition },
+                    set: { camera.setCameraPosition($0) }
+                )) {
+                    Text("Back").tag(AVCaptureDevice.Position.back)
+                    Text("Front").tag(AVCaptureDevice.Position.front)
+                }
+                .pickerStyle(.segmented)
+            }
             settingRow(label: "Sound") {
                 Toggle("", isOn: Binding(
                     get: { SoundManager.shared.enabled },

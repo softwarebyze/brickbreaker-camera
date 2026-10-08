@@ -12,6 +12,7 @@ final class CameraManager: NSObject, ObservableObject {
     @Published var supportsControls: Bool = false
     @Published var eventLog: [String] = []
     @Published var lastSliderEvent: Date = .distantPast
+    @Published var cameraPosition: AVCaptureDevice.Position = .back
 
     let session = AVCaptureSession()
     private let sessionQueue = DispatchQueue(label: "com.ebenfeld.brickbreaker-camera.session")
@@ -58,6 +59,41 @@ final class CameraManager: NSObject, ObservableObject {
 
         Task { @MainActor in
             self.appendLog("session ERROR \(err?.localizedDescription ?? "?")")
+        }
+    }
+
+    /// Swaps the session between front and back camera without dropping the
+    /// Camera Control slider (it's app-defined, not tied to a device).
+    func setCameraPosition(_ position: AVCaptureDevice.Position) {
+        guard position != cameraPosition else { return }
+        Task { @MainActor in self.cameraPosition = position }
+        sessionQueue.async { [weak self] in
+            guard let self else { return }
+            self.session.beginConfiguration()
+            defer { self.session.commitConfiguration() }
+            for input in self.session.inputs {
+                self.session.removeInput(input)
+            }
+            guard let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: position)
+                    ?? AVCaptureDevice.default(for: .video) else {
+                Task { @MainActor in
+                    self.appendLog("no \(position == .front ? "front" : "back") camera found")
+                }
+                return
+            }
+            do {
+                let input = try AVCaptureDeviceInput(device: device)
+                if self.session.canAddInput(input) {
+                    self.session.addInput(input)
+                }
+                Task { @MainActor in
+                    self.appendLog("camera → \(position == .front ? "front" : "back")")
+                }
+            } catch {
+                Task { @MainActor in
+                    self.appendLog("camera switch failed: \(error.localizedDescription)")
+                }
+            }
         }
     }
 
