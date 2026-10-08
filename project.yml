@@ -1,0 +1,21 @@
+name: BrickBreakerCamera
+options:
+  bundleIdPrefix: com.ebenfeld
+targets:
+  BrickBreakerCamera:
+    type: application
+    platform: iOS
+    deploymentTarget: "18.0"
+    sources: Sources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.ebenfeld.brickbreaker-camera
+        DEVELOPMENT_TEAM: 75M38Z9JBF
+        CODE_SIGN_STYLE: Automatic
+        IPHONEOS_DEPLOYMENT_TARGET: "18.0"
+        TARGETED_DEVICE_FAMILY: "1"
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_NSCameraUsageDescription: Camera is required so the Camera Control slider stays active while you steer the paddle.
+        INFOPLIST_KEY_CFBundleDisplayName: BrickBreaker
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
