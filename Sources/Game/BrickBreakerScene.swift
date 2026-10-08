@@ -84,6 +84,9 @@ final class BrickBreakerScene: SKScene {
     // MARK: External wiring
 
     var gameState: GameState?
+    /// Direct link to the camera session owner. The paddle reads the slider
+    /// value straight from here every frame — no relay, nothing to go stale.
+    weak var cameraLink: CameraManager?
     /// 0...1 paddle target from the Camera Control slider. Nil = no camera input.
     var cameraPaddle01: CGFloat?
     var controlMode: ControlMode = .cameraControl
@@ -460,16 +463,22 @@ final class BrickBreakerScene: SKScene {
     private func movePaddle(dt: CGFloat) {
         // Touch drag wins while touching; otherwise the Camera Control slider
         // (or the last known position in pure-touch mode).
+        // NOTE: the live slider value is read directly from the CameraManager
+        // every frame — an earlier design relayed it through SwiftUI onChange
+        // and the paddle starved whenever that relay stalled.
         if let tx = touchPaddleX {
             paddleTargetX = tx
-        } else if controlMode == .cameraControl, let cam = cameraPaddle01 {
-            var x = cam * playWidth
-            let half = effectivePaddleHalf()
-            if isFlipped { x = playWidth - x }
-            if isWrapped {
-                paddleTargetX = x // wrapping handled in clamp below
-            } else {
-                paddleTargetX = min(playWidth - half, max(half, x))
+        } else if controlMode == .cameraControl {
+            let live: CGFloat? = cameraLink.map { CGFloat($0.paddlePosition) } ?? cameraPaddle01
+            if let cam = live {
+                var x = cam * playWidth
+                let half = effectivePaddleHalf()
+                if isFlipped { x = playWidth - x }
+                if isWrapped {
+                    paddleTargetX = x // wrapping handled in clamp below
+                } else {
+                    paddleTargetX = min(playWidth - half, max(half, x))
+                }
             }
         }
         var x = paddleTargetX

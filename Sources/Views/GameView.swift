@@ -91,6 +91,7 @@ struct GameView: View {
             if scene == nil {
                 let s = BrickBreakerScene(size: UIScreen.main.bounds.size)
                 s.gameState = gameState
+                s.cameraLink = camera
                 s.controlMode = controlMode
                 s.useCameraBackground = gameState.useCameraBackground
                 s.cameraPaddle01 = controlMode == .cameraControl ? CGFloat(camera.paddlePosition) : nil
@@ -101,9 +102,6 @@ struct GameView: View {
             scene?.isPaused = false
         }
         .onDisappear { scene?.isPaused = true }
-        .onChange(of: camera.paddlePosition) { _, v in
-            if controlMode == .cameraControl { scene?.cameraPaddle01 = CGFloat(v) }
-        }
         .onChange(of: controlMode) { _, mode in
             scene?.controlMode = mode
             scene?.cameraPaddle01 = mode == .cameraControl ? CGFloat(camera.paddlePosition) : nil
