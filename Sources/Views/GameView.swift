@@ -1,3 +1,4 @@
+import AVKit
 import SpriteKit
 import SwiftUI
 
@@ -92,6 +93,15 @@ struct GameView: View {
         }
         .background(Color.black.ignoresSafeArea())
         .navigationBarHidden(true)
+        // Claim the Camera Control button for the game (like the test screen
+        // does). Without this interaction the system never hands us the
+        // controls overlay, so swipes have nowhere to go. Full press acts as
+        // the BlackBerry SPACE key: launch / fire.
+        .onCameraCaptureEvent { event in
+            if event.phase == .ended {
+                scene?.primaryAction()
+            }
+        }
         .onAppear {
             if scene == nil {
                 let s = BrickBreakerScene(size: UIScreen.main.bounds.size)
@@ -202,7 +212,7 @@ struct GameView: View {
 
     private var serveHint: some View {
         Text(controlMode == .cameraControl
-             ? "Light-press Camera Control → pick Paddle → swipe to aim. Tap to launch."
+             ? "Light-press Camera Control → pick Paddle → swipe to aim. Tap or press to launch."
              : "Drag to aim — tap to launch")
             .font(.subheadline)
             .foregroundStyle(.white.opacity(0.9))

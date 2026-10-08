@@ -396,6 +396,10 @@ final class BrickBreakerScene: SKScene {
 
     /// Tap = context action, like the BlackBerry SPACE key:
     /// launch a served/caught ball, else fire gun, else fire laser.
+    func primaryAction() {
+        handleTap()
+    }
+
     private func handleTap() {
         guard let gs = gameState else { return }
         if gs.phase == .serving || balls.contains(where: { $0.stuck }) {
