@@ -38,6 +38,12 @@ struct MenuView: View {
                     Text("BEST  \(gameState.highScore)")
                         .font(.system(.title3, design: .monospaced))
                         .foregroundStyle(.yellow)
+                    Text("📷 BEST  \(gameState.cameraBest)")
+                        .font(.system(.headline, design: .monospaced))
+                        .foregroundStyle(.cyan)
+                    Text("camera-slider only — no touch steering")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
 
                     Button("▶  Play") { path.append(Route.game) }
                         .buttonStyle(BigButton(color: .green))

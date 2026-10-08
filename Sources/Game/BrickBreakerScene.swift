@@ -215,6 +215,7 @@ final class BrickBreakerScene: SKScene {
     func startLevel(_ level: Int, keepBonuses: Bool = false) {
         removeAllChildren()
         bricks.removeAll(); balls.removeAll(); capsules.removeAll(); shots.removeAll()
+        gameState?.cameraSteering = (controlMode == .cameraControl)
         layoutConstants()
         buildPaddle()
         paddleX = playWidth / 2; paddleTargetX = paddleX
@@ -389,7 +390,12 @@ final class BrickBreakerScene: SKScene {
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches where t == paddleTouch {
             let p = t.location(in: self)
-            if hypot(p.x - touchStart.x, p.y - touchStart.y) > 12 { touchMovedFar = true }
+            if hypot(p.x - touchStart.x, p.y - touchStart.y) > 12 {
+                touchMovedFar = true
+                // Dragging the paddle by touch ends camera-purist eligibility.
+                // (Taps for launch/fire don't steer, so they don't count.)
+                gameState?.pureCameraRun = false
+            }
             var x = p.x + touchGrabOffset
             x = applyFlipWrap(x, forTouch: true)
             touchPaddleX = x
@@ -498,8 +504,7 @@ final class BrickBreakerScene: SKScene {
         moveCapsules(dt: dt)
     }
 
-    private func movePaddle(dt: CGFloat) {
-        // Touch drag wins while touching; otherwise the Camera Control slider
+    private func movePaddle(dt: CGFloat) {        // Touch drag wins while touching; otherwise the Camera Control slider
         // (or the last known position in pure-touch mode). The live slider
         // value is read directly from the CameraManager every frame.
         if let tx = touchPaddleX {

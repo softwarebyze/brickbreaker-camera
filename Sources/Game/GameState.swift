@@ -12,6 +12,14 @@ final class GameState: ObservableObject {
     @Published var lives: Int = 3
     @Published var level: Int = 1
     @Published var highScore: Int = UserDefaults.standard.integer(forKey: "BrickBreakerHighScore")
+    @Published var cameraBest: Int = UserDefaults.standard.integer(forKey: "BrickBreakerCameraBest")
+    @Published var highScoreAtRunStart: Int = 0
+    @Published var cameraBestAtRunStart: Int = 0
+    /// True while the run still counts as camera-slider-only: camera steering
+    /// selected and no touch-drag of the paddle yet. Taps (launch/fire) are
+    /// fine — they don't steer.
+    @Published var pureCameraRun = true
+    @Published var cameraSteering = true
     @Published var ammo: Int = 0               // gun bullets remaining
     @Published var hasLaser = false
     @Published var hasCatch = false
@@ -33,6 +41,11 @@ final class GameState: ObservableObject {
             highScore = score
             UserDefaults.standard.set(score, forKey: "BrickBreakerHighScore")
         }
+        // Bank the purist board live: only while the run still qualifies.
+        if pureCameraRun && cameraSteering && score > cameraBest {
+            cameraBest = score
+            UserDefaults.standard.set(score, forKey: "BrickBreakerCameraBest")
+        }
     }
 
     func flash(_ text: String) {
@@ -43,6 +56,9 @@ final class GameState: ObservableObject {
         score = 0
         lives = 3
         level = startingLevel
+        highScoreAtRunStart = highScore
+        cameraBestAtRunStart = cameraBest
+        pureCameraRun = true
         ammo = 0
         hasLaser = false
         hasCatch = false

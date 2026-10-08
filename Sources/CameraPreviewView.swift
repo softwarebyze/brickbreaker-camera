@@ -9,6 +9,11 @@ struct CameraPreviewView: UIViewRepresentable {
         let view = PreviewUIView()
         view.previewLayer.session = session
         view.previewLayer.videoGravity = .resizeAspectFill
+        // Pin the feed upright for our portrait-locked game.
+        if let connection = view.previewLayer.connection,
+           connection.isVideoOrientationSupported {
+            connection.videoOrientation = .portrait
+        }
         return view
     }
 

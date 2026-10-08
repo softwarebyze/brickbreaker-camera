@@ -72,7 +72,7 @@ struct GameView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                             .overlay(RoundedRectangle(cornerRadius: 10)
                                 .stroke(Color.white.opacity(0.35), lineWidth: 1))
-                            .padding(.top, 118)
+                            .padding(.top, 70)
                             .padding(.leading, 12)
                         Spacer()
                     }
@@ -94,16 +94,6 @@ struct GameView: View {
                     .frame(height: 200) // paddle zone stays clear
             }
             .allowsHitTesting(false)
-
-            // Tappable controls pinned to the HUD corners.
-            VStack {
-                HStack {
-                    Spacer()
-                    pauseButton
-                }
-                Spacer()
-            }
-            .padding(.horizontal, 12)
 
             if pausedFromUI { pauseMenu }
             if gameState.phase == .levelClear { levelClearCard }
@@ -149,8 +139,14 @@ struct GameView: View {
     private var hudBar: some View {
         HStack(spacing: 10) {
             VStack(alignment: .leading, spacing: 0) {
-                Text("SCORE \(gameState.score)")
-                    .font(.system(.headline, design: .monospaced))
+                HStack(spacing: 4) {
+                    if gameState.pureCameraRun && controlMode == .cameraControl {
+                        Text("📷")
+                            .font(.caption)
+                    }
+                    Text("SCORE \(gameState.score)")
+                        .font(.system(.headline, design: .monospaced))
+                }
                 Text("BEST \(gameState.highScore)")
                     .font(.system(.caption, design: .monospaced))
                     .foregroundStyle(.secondary)
@@ -160,27 +156,23 @@ struct GameView: View {
                 .font(.system(.headline, design: .monospaced))
             Spacer()
             LivesView(lives: gameState.lives)
+            Button {
+                pausedFromUI = true
+                scene?.isPaused = true
+                gameState.phase = .paused
+            } label: {
+                Image(systemName: "pause.fill")
+                    .foregroundStyle(.white)
+                    .padding(10)
+                    .background(Color.white.opacity(0.15))
+                    .clipShape(Circle())
+            }
         }
         .foregroundStyle(.white)
         .padding(.horizontal, 14)
-        .padding(.top, 54)
+        .padding(.top, 10)
         .padding(.bottom, 6)
         .background(Color.black.opacity(gameState.useCameraBackground ? 0.45 : 0.85))
-    }
-
-    private var pauseButton: some View {
-        Button {
-            pausedFromUI = true
-            scene?.isPaused = true
-            gameState.phase = .paused
-        } label: {
-            Image(systemName: "pause.fill")
-                .foregroundStyle(.white)
-                .padding(10)
-                .background(Color.white.opacity(0.15))
-                .clipShape(Circle())
-        }
-        .padding(.top, 110)
     }
 
     private var messageBanner: some View {
@@ -330,11 +322,23 @@ struct GameView: View {
         MenuCard(title: "Game Over") {
             Text("Score: \(gameState.score)")
                 .foregroundStyle(.white)
-            if gameState.score >= gameState.highScore, gameState.score > 0 {
+            if gameState.score > gameState.highScoreAtRunStart, gameState.score > 0 {
                 Text("New best! 🏆")
                     .foregroundStyle(.yellow)
             } else {
                 Text("Best: \(gameState.highScore)")
+                    .foregroundStyle(.secondary)
+            }
+            if gameState.pureCameraRun && controlMode == .cameraControl {
+                if gameState.score > gameState.cameraBestAtRunStart, gameState.score > 0 {
+                    Text("New 📷 best! 🏆")
+                        .foregroundStyle(.cyan)
+                } else {
+                    Text("📷 Best: \(gameState.cameraBest)")
+                        .foregroundStyle(.secondary)
+                }
+            } else {
+                Text("📷 Best: \(gameState.cameraBest)")
                     .foregroundStyle(.secondary)
             }
             Button("Play again") {

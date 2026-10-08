@@ -56,6 +56,7 @@ struct HowToPlayView: View {
                         Bullet("Gun hit: 50 pts (the only way to break silver!)")
                         Bullet("Laser hit: 5 pts, damaging pair totals 10")
                         Bullet("Bomb damage: 5 pts per brick")
+                        Bullet("📷 Best: your top score steered with the Camera Control slider only — no touch-dragging. Show it off.")
                     }
 
                     Group {
