@@ -27,6 +27,7 @@ final class GameState: ObservableObject {
     // overlay coming up, and it looks great dimmed behind the bricks.
     @Published var useCameraBackground = true
     @Published var paddleDebug: String = ""    // temporary live paddle diagnostics
+    @Published var lastPressNote: String = ""  // temporary: last Camera Control press seen
 
     func addScore(_ points: Int) {
         score += points

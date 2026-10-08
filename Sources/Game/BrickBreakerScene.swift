@@ -397,6 +397,7 @@ final class BrickBreakerScene: SKScene {
     /// Tap = context action, like the BlackBerry SPACE key:
     /// launch a served/caught ball, else fire gun, else fire laser.
     func primaryAction() {
+        gameState?.lastPressNote = "press \(Date().formatted(date: .omitted, time: .standard))"
         handleTap()
     }
 

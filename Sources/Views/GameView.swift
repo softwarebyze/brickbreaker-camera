@@ -71,6 +71,9 @@ struct GameView: View {
                         .font(.system(.caption2, design: .monospaced))
                         .foregroundStyle(.yellow)
                 }
+                Text("overlay:\(camera.controlsActive ? "ACTIVE" : "idle") \(gameState.lastPressNote)")
+                    .font(.system(.caption2, design: .monospaced))
+                    .foregroundStyle(.orange)
                 messageBanner
                 Spacer()
                 if gameState.phase == .serving {
