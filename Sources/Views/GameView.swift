@@ -46,10 +46,14 @@ struct GameView: View {
 
     var body: some View {
         ZStack {
-            // Optional live-camera background (behind the transparent scene).
+            // Optional live-camera background (behind the transparent scene),
+            // dimmed so the bricks stay readable.
             if gameState.useCameraBackground {
                 CameraPreviewView(session: camera.session)
                     .ignoresSafeArea()
+                Color.black.opacity(0.55)
+                    .ignoresSafeArea()
+                    .allowsHitTesting(false)
             }
 
             if let scene {

@@ -23,7 +23,9 @@ final class GameState: ObservableObject {
     @Published var ballCount = 1
     @Published var phase: GamePhase = .menu
     @Published var message: String? = nil      // transient banner, e.g. "Multi!"
-    @Published var useCameraBackground = false
+    // On by default: a visible camera feed is what keeps the Camera Control
+    // overlay coming up, and it looks great dimmed behind the bricks.
+    @Published var useCameraBackground = true
     @Published var paddleDebug: String = ""    // temporary live paddle diagnostics
 
     func addScore(_ points: Int) {
