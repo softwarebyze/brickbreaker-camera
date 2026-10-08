@@ -103,7 +103,28 @@ struct GameView: View {
             }
             .allowsHitTesting(false)
 
-            pauseOverlay
+            // The one and only pause button. It must live outside the
+            // touch-transparent HUD above to receive taps, aligned with the
+            // score row via matching padding.
+            VStack {
+                HStack {
+                    Spacer()
+                    Button {
+                        pausedFromUI = true
+                        scene?.isPaused = true
+                        gameState.phase = .paused
+                    } label: {
+                        Image(systemName: "pause.fill")
+                            .foregroundStyle(.white)
+                            .padding(10)
+                            .background(Color.white.opacity(0.15))
+                            .clipShape(Circle())
+                    }
+                }
+                .padding(.horizontal, 14)
+                .padding(.top, 10)
+                Spacer()
+            }
 
             if pausedFromUI { pauseMenu }
             if gameState.phase == .levelClear { levelClearCard }
@@ -166,35 +187,17 @@ struct GameView: View {
                 .font(.system(.headline, design: .monospaced))
             Spacer()
             LivesView(lives: gameState.lives)
+            // Pause lives here visually, but the actual tappable button is
+            // pauseOverlay below: anything inside this touch-transparent HUD
+            // can't receive taps, and SwiftUI has no child opt-out.
+            Color.clear
+                .frame(width: 40, height: 40)
         }
         .foregroundStyle(.white)
         .padding(.horizontal, 14)
         .padding(.top, 10)
         .padding(.bottom, 6)
         .background(Color.black.opacity(gameState.useCameraBackground ? 0.45 : 0.85))
-    }
-
-    /// Pause lives outside the touch-transparent HUD so it stays tappable.
-    private var pauseOverlay: some View {
-        VStack {
-            HStack {
-                Spacer()
-                Button {
-                    pausedFromUI = true
-                    scene?.isPaused = true
-                    gameState.phase = .paused
-                } label: {
-                    Image(systemName: "pause.fill")
-                        .foregroundStyle(.white)
-                        .padding(10)
-                        .background(Color.white.opacity(0.15))
-                        .clipShape(Circle())
-                }
-            }
-            .padding(.horizontal, 12)
-            .padding(.top, 10)
-            Spacer()
-        }
     }
 
     private var messageBanner: some View {
