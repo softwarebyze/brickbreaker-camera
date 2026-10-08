@@ -466,11 +466,14 @@ final class BrickBreakerScene: SKScene {
         // NOTE: the live slider value is read directly from the CameraManager
         // every frame — an earlier design relayed it through SwiftUI onChange
         // and the paddle starved whenever that relay stalled.
+        var source = "idle"
         if let tx = touchPaddleX {
             paddleTargetX = tx
+            source = "touch"
         } else if controlMode == .cameraControl {
             let live: CGFloat? = cameraLink.map { CGFloat($0.paddlePosition) } ?? cameraPaddle01
             if let cam = live {
+                source = String(format: "cam %.2f", cam)
                 var x = cam * playWidth
                 let half = effectivePaddleHalf()
                 if isFlipped { x = playWidth - x }
@@ -479,7 +482,11 @@ final class BrickBreakerScene: SKScene {
                 } else {
                     paddleTargetX = min(playWidth - half, max(half, x))
                 }
+            } else {
+                source = "cam(nil)"
             }
+        } else {
+            source = "mode=\(controlMode.rawValue)"
         }
         var x = paddleTargetX
         let half = effectivePaddleHalf()
@@ -494,6 +501,16 @@ final class BrickBreakerScene: SKScene {
         paddleX += (x - paddleX) * t
         paddle.position.x = paddleX
         glueStuckBalls()
+        reportPaddleDebug(source: source)
+    }
+
+    /// Temporary live diagnostics (removed before store submission).
+    private var lastDebugSent = ""
+    private func reportPaddleDebug(source: String) {
+        let str = "\(source) tgt=\(Int(paddleTargetX)) x=\(Int(paddleX)) w=\(Int(playWidth))"
+        guard str != lastDebugSent else { return }
+        lastDebugSent = str
+        gameState?.paddleDebug = str
     }
 
     private func glueStuckBalls() {

@@ -61,6 +61,11 @@ struct GameView: View {
             VStack(spacing: 0) {
                 hudBar
                 steeringLine
+                if !gameState.paddleDebug.isEmpty {
+                    Text(gameState.paddleDebug)
+                        .font(.system(.caption2, design: .monospaced))
+                        .foregroundStyle(.yellow)
+                }
                 messageBanner
                 Spacer()
                 if gameState.phase == .serving {

@@ -24,6 +24,7 @@ final class GameState: ObservableObject {
     @Published var phase: GamePhase = .menu
     @Published var message: String? = nil      // transient banner, e.g. "Multi!"
     @Published var useCameraBackground = false
+    @Published var paddleDebug: String = ""    // temporary live paddle diagnostics
 
     func addScore(_ points: Int) {
         score += points
