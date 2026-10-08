@@ -8,7 +8,7 @@ FAITHFUL TO THE ORIGINAL
 • The original scoring: 10 points per brick hit, 50 per capsule, bricks that sink as you play, and the famous slow-fast-slow ball.
 
 PROVE IT WITH THE SLIDER
-• A separate 📷 leaderboard tracks your best score steered with the Camera Control slider only — one touch-drag and the run no longer counts.
+• A separate camera-only leaderboard tracks your best score steered with the Camera Control slider only — one touch-drag and the run no longer counts.
 
 BUILT FOR IPHONE
 • Optional live camera background (front or back), a built-in Camera Control test screen, and retro bleeps synthesized on-device.

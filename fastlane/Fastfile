@@ -54,10 +54,10 @@ platform :ios do
         content_rights_has_rights: true,
         content_rights_contains_third_party_content: false
       },
-      review_information: {
+      app_review_information: {
         first_name: "Zachary",
         last_name: "Ebenfeld",
-        email: "zackebenfeld@gmail.com"
+        email_address: "zackebenfeld@gmail.com"
       },
       app_rating_config_path: File.expand_path("../fastlane/rating.json", __dir__)
     )
