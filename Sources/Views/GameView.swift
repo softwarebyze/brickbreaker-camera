@@ -61,19 +61,30 @@ struct GameView: View {
                     .ignoresSafeArea()
             }
 
+            // A visible camera feed is what keeps the Camera Control overlay
+            // coming up, so the game always shows at least a peephole — full
+            // background when enabled, a lil monitor otherwise.
+            if !gameState.useCameraBackground {
+                VStack {
+                    HStack {
+                        CameraPreviewView(session: camera.session)
+                            .frame(width: 104, height: 78)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .overlay(RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.white.opacity(0.35), lineWidth: 1))
+                            .padding(.top, 118)
+                            .padding(.leading, 12)
+                        Spacer()
+                    }
+                    Spacer()
+                }
+                .allowsHitTesting(false)
+            }
+
             // HUD strip. Everything informational lives in the TOP half —
             // the bottom 200pt belongs to the paddle and ball alone.
             VStack(spacing: 0) {
                 hudBar
-                steeringLine
-                if !gameState.paddleDebug.isEmpty {
-                    Text(gameState.paddleDebug)
-                        .font(.system(.caption2, design: .monospaced))
-                        .foregroundStyle(.yellow)
-                }
-                Text("overlay:\(camera.controlsActive ? "ACTIVE" : "idle") \(gameState.lastPressNote)")
-                    .font(.system(.caption2, design: .monospaced))
-                    .foregroundStyle(.orange)
                 messageBanner
                 Spacer()
                 if gameState.phase == .serving {
@@ -128,12 +139,6 @@ struct GameView: View {
             scene?.controlMode = mode
             scene?.cameraPaddle01 = mode == .cameraControl ? CGFloat(camera.paddlePosition) : nil
         }
-        .onChange(of: camera.controlsActive) { _, active in
-            if active {
-                gameState.flash("Camera Control linked — swipe!")
-                SoundManager.shared.play(.capsule)
-            }
-        }
         .onChange(of: gameState.useCameraBackground) { _, v in
             scene?.useCameraBackground = v
         }
@@ -178,27 +183,6 @@ struct GameView: View {
         .padding(.top, 110)
     }
 
-    /// Tiny live link readout: proves Camera Control swipes reach the game.
-    private var steeringLine: some View {
-        Group {
-            switch controlMode {
-            case .cameraControl:
-                let secs = max(0, Date().timeIntervalSince(camera.lastSliderEvent))
-                let live = secs < 86400 && camera.lastSliderEvent != .distantPast
-                Text(live
-                     ? "📷 swipe \(String(format: "%.2f", camera.paddlePosition)) • last swipe \(Int(secs))s ago"
-                     : "📷 swipe \(String(format: "%.2f", camera.paddlePosition)) • light-press Camera Control, pick Paddle, then swipe")
-                    .font(.caption2)
-                    .foregroundStyle(live ? .green : .white.opacity(0.65))
-            case .touch:
-                Text("Steering: touch drag")
-                    .font(.caption2)
-                    .foregroundStyle(.white.opacity(0.65))
-            }
-        }
-        .padding(.top, 2)
-    }
-
     private var messageBanner: some View {
         VStack(spacing: 8) {
             if let msg = gameState.message {
@@ -217,10 +201,10 @@ struct GameView: View {
         .animation(.easeInOut, value: gameState.message)
     }
 
+    /// Serve coaching: the full Camera Control recipe only until the first
+    /// swipe lands, then a short reminder. Fewer words, more game.
     private var serveHint: some View {
-        Text(controlMode == .cameraControl
-             ? "Light-press Camera Control → pick Paddle → swipe to aim. Tap or press to launch."
-             : "Drag to aim — tap to launch")
+        Text(serveHintText)
             .font(.subheadline)
             .foregroundStyle(.white.opacity(0.9))
             .multilineTextAlignment(.center)
@@ -229,6 +213,16 @@ struct GameView: View {
             .background(Color.white.opacity(0.15))
             .clipShape(Capsule())
             .padding(.horizontal, 30)
+    }
+
+    private var serveHintText: String {
+        if controlMode == .cameraControl {
+            if camera.lastSliderEvent == .distantPast {
+                return "Light-press Camera Control → pick Paddle → swipe. Tap to launch."
+            }
+            return "Swipe to aim — tap to launch"
+        }
+        return "Drag to aim — tap to launch"
     }
 
     @ViewBuilder
@@ -275,6 +269,13 @@ struct GameView: View {
                     ForEach(ControlMode.allCases) { m in Text(m.rawValue).tag(m) }
                 }
                 .pickerStyle(.segmented)
+            }
+            if controlMode == .cameraControl {
+                settingRow(label: "📷 swipe") {
+                    Text(String(format: "%.2f", camera.paddlePosition))
+                        .font(.system(.body, design: .monospaced))
+                        .foregroundStyle(.cyan)
+                }
             }
             settingRow(label: "Camera background") {
                 Toggle("", isOn: $gameState.useCameraBackground)

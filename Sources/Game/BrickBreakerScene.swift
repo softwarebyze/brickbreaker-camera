@@ -112,10 +112,12 @@ final class BrickBreakerScene: SKScene {
     private var paddle: SKShapeNode!
     private var paddleX: CGFloat = 200
     private var paddleTargetX: CGFloat = 200
-    private var touchPaddleX: CGFloat?
+    private var paddleVelX: CGFloat = 0      // smoothed, for "english" on bounce
+    private var paddleTouch: UITouch?        // the finger currently steering (multi-touch: others fire)
     private var touchGrabOffset: CGFloat = 0
     private var touchMovedFar = false
     private var touchStart: CGPoint = .zero
+    private var touchPaddleX: CGFloat?
     private var bricks: [Brick] = []
     private var balls: [Ball] = []
     private var capsules: [Capsule] = []
@@ -316,13 +318,32 @@ final class BrickBreakerScene: SKScene {
         gameState?.ballCount = balls.count
     }
 
-    private func launchStuckBalls(angleTweak: CGFloat = 0) {
+    /// Launches held balls. An explicit x aims the shot there (tap-to-aim);
+    /// without one, caught balls keep their hold offset and serves go straight.
+    /// Release inherits a touch of paddle motion, so you can curve the launch.
+    private func launchStuckBalls(aimX: CGFloat? = nil) {
         let speed = currentBallSpeed()
+        let half = max(effectivePaddleHalf(), 1)
         for ball in balls where ball.stuck {
             ball.stuck = false
-            let deg = max(-Tune.maxReboundDeg, min(Tune.maxReboundDeg, angleTweak * Tune.maxReboundDeg))
-            let rad = CGFloat.pi / 2 + deg * CGFloat.pi / 180
-            ball.vel = CGVector(dx: cos(rad) * speed, dy: abs(sin(rad)) * speed)
+            let offset: CGFloat
+            if let aimX {
+                offset = max(-1, min(1, (aimX - paddleX) / half))
+            } else if ball.stuckOffset != 0 {
+                offset = max(-1, min(1, ball.stuckOffset / half))
+            } else {
+                offset = 0
+            }
+            let rad = offset * Tune.maxReboundDeg * CGFloat.pi / 180
+            var dx = sin(rad) * speed + paddleVelX * 0.25
+            var dy = abs(cos(rad)) * speed
+            let m = max(hypot(dx, dy), 0.001)
+            dx *= speed / m; dy *= speed / m
+            if dy < speed * 0.3 {
+                dy = speed * 0.3
+                dx = (dx >= 0 ? 1 : -1) * sqrt(max(speed * speed - dy * dy, 0))
+            }
+            ball.vel = CGVector(dx: dx, dy: dy)
         }
         if balls.contains(where: { !$0.stuck }) {
             gameState?.phase = .playing
@@ -348,31 +369,47 @@ final class BrickBreakerScene: SKScene {
     // MARK: Input (touch + camera)
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let t = touches.first else { return }
-        let p = t.location(in: self)
-        touchStart = p
-        touchMovedFar = false
-        touchGrabOffset = paddleX - p.x
-        touchPaddleX = paddleX
+        guard running else { return }
+        for t in touches {
+            if paddleTouch == nil {
+                // First finger down steers the paddle.
+                let p = t.location(in: self)
+                paddleTouch = t
+                touchStart = p
+                touchMovedFar = false
+                touchGrabOffset = paddleX - p.x
+                touchPaddleX = paddleX
+            } else {
+                // Second finger while steering = fire / launch immediately.
+                handleTap(at: t.location(in: self))
+            }
+        }
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let t = touches.first else { return }
-        let p = t.location(in: self)
-        if hypot(p.x - touchStart.x, p.y - touchStart.y) > 12 { touchMovedFar = true }
-        var x = p.x + touchGrabOffset
-        x = applyFlipWrap(x, forTouch: true)
-        touchPaddleX = x
+        for t in touches where t == paddleTouch {
+            let p = t.location(in: self)
+            if hypot(p.x - touchStart.x, p.y - touchStart.y) > 12 { touchMovedFar = true }
+            var x = p.x + touchGrabOffset
+            x = applyFlipWrap(x, forTouch: true)
+            touchPaddleX = x
+        }
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        defer { touchPaddleX = nil }
-        guard running else { return }
-        if !touchMovedFar { handleTap() }
+        for t in touches where t == paddleTouch {
+            // A quick tap (no drag) aims + launches / fires at the tap point.
+            if !touchMovedFar { handleTap(at: t.location(in: self)) }
+            paddleTouch = nil
+            touchPaddleX = nil
+        }
     }
 
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        touchPaddleX = nil
+        for t in touches where t == paddleTouch {
+            paddleTouch = nil
+            touchPaddleX = nil
+        }
     }
 
     private func applyFlipWrap(_ x: CGFloat, forTouch: Bool) -> CGFloat {
@@ -395,20 +432,16 @@ final class BrickBreakerScene: SKScene {
     }
 
     /// Tap = context action, like the BlackBerry SPACE key:
-    /// launch a served/caught ball, else fire gun, else fire laser.
+    /// launch a served/caught ball (aimed at the tap point), else fire gun,
+    /// else fire laser. A nil point (Camera Control press) launches straight.
     func primaryAction() {
-        gameState?.lastPressNote = "press \(Date().formatted(date: .omitted, time: .standard))"
-        handleTap()
+        handleTap(at: nil)
     }
 
-    private func handleTap() {
+    private func handleTap(at p: CGPoint?) {
         guard let gs = gameState else { return }
         if gs.phase == .serving || balls.contains(where: { $0.stuck }) {
-            var tweak: CGFloat = 0
-            if let stuck = balls.first(where: { $0.stuck }) {
-                tweak = max(-1, min(1, stuck.stuckOffset / max(effectivePaddleHalf(), 1)))
-            }
-            launchStuckBalls(angleTweak: tweak)
+            launchStuckBalls(aimX: p?.x)
             return
         }
         guard gs.phase == .playing else { return }
@@ -467,18 +500,13 @@ final class BrickBreakerScene: SKScene {
 
     private func movePaddle(dt: CGFloat) {
         // Touch drag wins while touching; otherwise the Camera Control slider
-        // (or the last known position in pure-touch mode).
-        // NOTE: the live slider value is read directly from the CameraManager
-        // every frame — an earlier design relayed it through SwiftUI onChange
-        // and the paddle starved whenever that relay stalled.
-        var source = "idle"
+        // (or the last known position in pure-touch mode). The live slider
+        // value is read directly from the CameraManager every frame.
         if let tx = touchPaddleX {
             paddleTargetX = tx
-            source = "touch"
         } else if controlMode == .cameraControl {
             let live: CGFloat? = cameraLink.map { CGFloat($0.paddlePosition) } ?? cameraPaddle01
             if let cam = live {
-                source = String(format: "cam %.2f", cam)
                 var x = cam * playWidth
                 let half = effectivePaddleHalf()
                 if isFlipped { x = playWidth - x }
@@ -487,11 +515,7 @@ final class BrickBreakerScene: SKScene {
                 } else {
                     paddleTargetX = min(playWidth - half, max(half, x))
                 }
-            } else {
-                source = "cam(nil)"
             }
-        } else {
-            source = "mode=\(controlMode.rawValue)"
         }
         var x = paddleTargetX
         let half = effectivePaddleHalf()
@@ -501,21 +525,15 @@ final class BrickBreakerScene: SKScene {
         } else {
             x = min(playWidth - half, max(half, x))
         }
-        // Fast exponential tracking: responsive, yet smooth.
+        // Fast exponential tracking: responsive, yet smooth. The smoothed
+        // velocity below is what bends rebounds ("english").
         let t = min(1, Tune.paddleLerp * dt)
+        let prevX = paddleX
         paddleX += (x - paddleX) * t
         paddle.position.x = paddleX
+        let instantVel = dt > 0.0001 ? (paddleX - prevX) / dt : 0
+        paddleVelX += (instantVel - paddleVelX) * min(1, 10 * dt)
         glueStuckBalls()
-        reportPaddleDebug(source: source)
-    }
-
-    /// Temporary live diagnostics (removed before store submission).
-    private var lastDebugSent = ""
-    private func reportPaddleDebug(source: String) {
-        let str = "\(source) tgt=\(Int(paddleTargetX)) x=\(Int(paddleX)) w=\(Int(playWidth))"
-        guard str != lastDebugSent else { return }
-        lastDebugSent = str
-        gameState?.paddleDebug = str
     }
 
     private func glueStuckBalls() {
@@ -529,7 +547,7 @@ final class BrickBreakerScene: SKScene {
         for (i, ball) in balls.enumerated() {
             if ball.stuck { continue }
             var remaining = hypot(ball.vel.dx, ball.vel.dy) * dt
-            let step: CGFloat = 5
+            let step: CGFloat = 4 // small enough that fast balls can't tunnel
             while remaining > 0 {
                 let d = min(step, remaining)
                 remaining -= d
@@ -583,28 +601,84 @@ final class BrickBreakerScene: SKScene {
                width: effectivePaddleHalf() * 2, height: paddleH)
     }
 
+    /// Paddle contact, in the spirit of the original but with real feel:
+    ///  * Top-face hits aim by strike position — soft near center, sharpening
+    ///    toward the edges (cubic), up to ~70° off vertical.
+    ///  * A moving paddle bends the rebound ("english") via paddleVelX.
+    ///  * Corners and side grazes reflect physically instead of tunneling or
+    ///    sticking, so edge pinches behave instead of glitching through.
     private func collideBallWithPaddle(_ ball: Ball) {
-        guard ball.vel.dy < 0 else { return }
         let p = ball.node.position
-        let r = paddleRect().insetBy(dx: -2, dy: 0)
-        guard p.y - ballR <= r.maxY, p.y > r.minY - 14,
-              p.x >= r.minX - ballR, p.x <= r.maxX + ballR else { return }
-        let offset = max(-1, min(1, (p.x - paddleX) / max(effectivePaddleHalf(), 1)))
-        if hasCatch {
-            // Catch: hold the ball; the offset becomes the launch aim.
-            ball.stuck = true
-            ball.stuckOffset = (p.x - paddleX) * 0.9
-            ball.vel = .zero
-            SoundManager.shared.play(.paddle)
-            return
-        }
+        let r = paddleRect()
+        // Closest point on the paddle to the ball center (handles faces,
+        // edges and corners uniformly).
+        let cx = min(r.maxX, max(r.minX, p.x))
+        let cy = min(r.maxY, max(r.minY, p.y))
+        var nx = p.x - cx
+        var ny = p.y - cy
+        let dist = hypot(nx, ny)
+        guard dist < ballR + 1 else { return }
+        if dist > 0.001 { nx /= dist; ny /= dist } else { nx = 0; ny = 1 }
+        // Only bounce when moving into the surface; otherwise just unstick.
+        let intoSurface = ball.vel.dx * nx + ball.vel.dy * ny
+        if intoSurface >= 0 { return }
+
         let s = max(ball.speed, currentBallSpeed())
-        let rad = CGFloat.pi / 2 + offset * Tune.maxReboundDeg * CGFloat.pi / 180
-        ball.vel = CGVector(dx: cos(rad) * s, dy: abs(sin(rad)) * s)
-        ball.node.position.y = r.maxY + ballR + 0.5
+        if ny > 0.7 && ball.vel.dy < 0 {
+            // Top face: classic position aim + english.
+            let half = max(effectivePaddleHalf(), 1)
+            let offset = max(-1, min(1, (p.x - paddleX) / half))
+            let deg = offset * Tune.maxReboundDeg + offset * abs(offset) * 8
+            let rad = deg * CGFloat.pi / 180
+            var dx = sin(rad) * s + paddleVelX * 0.35
+            var dy = abs(cos(rad)) * s
+            if abs(offset) > 0.85 {
+                dx += (offset >= 0 ? 1 : -1) * s * 0.12 // corner pinch
+            }
+            let m = max(hypot(dx, dy), 0.001)
+            dx *= s / m; dy *= s / m
+            if dy < s * 0.3 { // never flatter than ~17° above horizontal
+                dy = s * 0.3
+                dx = (dx >= 0 ? 1 : -1) * sqrt(max(s * s - dy * dy, 0))
+            }
+            if hasCatch {
+                // Catch: hold the ball; the hold offset becomes the launch aim.
+                ball.stuck = true
+                ball.stuckOffset = (p.x - paddleX) * 0.9
+                ball.vel = .zero
+                ball.node.position = CGPoint(x: paddleX + ball.stuckOffset,
+                                             y: r.maxY + ballR + 0.5)
+                SoundManager.shared.play(.paddle)
+                popPaddle()
+                paddleHits += 1
+                registerBounce(sound: nil)
+                maybeDescend()
+                return
+            }
+            ball.vel = CGVector(dx: dx, dy: dy)
+            ball.node.position = CGPoint(x: p.x, y: r.maxY + ballR + 0.5)
+        } else {
+            // Edge / corner graze: true reflection off the contact normal.
+            let vx = ball.vel.dx - 2 * intoSurface * nx
+            let vy = ball.vel.dy - 2 * intoSurface * ny
+            ball.vel = CGVector(dx: vx, dy: vy)
+            ball.node.position = CGPoint(x: cx + nx * (ballR + 0.5),
+                                         y: cy + ny * (ballR + 0.5))
+        }
+        popPaddle()
+        SoundManager.shared.play(.paddle)
         paddleHits += 1
-        registerBounce(sound: .paddle)
+        registerBounce(sound: nil)
         maybeDescend()
+    }
+
+    /// Quick squash-and-stretch so paddle hits have visible punch.
+    private func popPaddle() {
+        paddle.removeAction(forKey: "pop")
+        paddle.run(SKAction.sequence([
+            SKAction.scaleX(to: 1.12, y: 0.82, duration: 0.06),
+            SKAction.scale(to: 1.0, duration: 0.09),
+        ]), withKey: "pop")
     }
 
     private func collideBallWithBricks(_ ball: Ball) {

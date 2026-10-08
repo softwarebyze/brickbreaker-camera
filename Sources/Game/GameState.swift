@@ -26,8 +26,6 @@ final class GameState: ObservableObject {
     // On by default: a visible camera feed is what keeps the Camera Control
     // overlay coming up, and it looks great dimmed behind the bricks.
     @Published var useCameraBackground = true
-    @Published var paddleDebug: String = ""    // temporary live paddle diagnostics
-    @Published var lastPressNote: String = ""  // temporary: last Camera Control press seen
 
     func addScore(_ points: Int) {
         score += points

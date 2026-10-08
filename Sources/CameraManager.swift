@@ -39,7 +39,7 @@ final class CameraManager: NSObject, ObservableObject {
 
     @objc private func sessionWasInterrupted(_ note: Notification) {
         let reason = note.userInfo?[AVCaptureSessionInterruptionReasonKey] as? AVCaptureSession.InterruptionReason
-        print("CAM: session INTERRUPTED reason=\(String(describing: reason))")
+
         Task { @MainActor in
             self.appendLog("session INTERRUPTED (\(String(describing: reason)))")
             self.statusMessage = "Camera interrupted (\(String(describing: reason))) — reopen the app."
@@ -47,7 +47,7 @@ final class CameraManager: NSObject, ObservableObject {
     }
 
     @objc private func sessionInterruptionEnded(_ note: Notification) {
-        print("CAM: session interruption ended")
+
         Task { @MainActor in
             self.appendLog("session interruption ended")
         }
@@ -55,7 +55,7 @@ final class CameraManager: NSObject, ObservableObject {
 
     @objc private func sessionRuntimeError(_ note: Notification) {
         let err = note.userInfo?[AVCaptureSessionErrorKey] as? AVError
-        print("CAM: session RUNTIME ERROR \(String(describing: err))")
+
         Task { @MainActor in
             self.appendLog("session ERROR \(err?.localizedDescription ?? "?")")
         }
@@ -121,7 +121,7 @@ final class CameraManager: NSObject, ObservableObject {
             var paddleSlider: AVCaptureSlider?
             if #available(iOS 18.0, *) {
                 let supports = self.session.supportsControls
-                print("CAM: supportsControls=\(supports)")
+
                 Task { @MainActor in
                     self.supportsControls = supports
                 }
@@ -133,7 +133,7 @@ final class CameraManager: NSObject, ObservableObject {
                     let slider = AVCaptureSlider("Paddle", symbolName: "slider.horizontal.3", in: Float(0)...Float(1))
                     slider.value = 0.5
                     slider.setActionQueue(self.sessionQueue) { [weak self] newValue in
-                        print("CAM: slider event \(newValue)")
+
                         Task { @MainActor in
                             self?.paddlePosition = newValue
                             self?.lastSliderEvent = Date()
@@ -143,12 +143,12 @@ final class CameraManager: NSObject, ObservableObject {
                     if self.session.canAddControl(slider) {
                         self.session.addControl(slider)
                         paddleSlider = slider
-                        print("CAM: Paddle slider added to session")
+
                         Task { @MainActor in
                             self.statusMessage = "Camera running — light-press Camera Control, pick Paddle, swipe to steer."
                         }
                     } else {
-                        print("CAM: session REFUSED Paddle slider")
+
                         Task { @MainActor in
                             self.statusMessage = "Camera running, but session refused the Paddle control (limit reached?)."
                         }
@@ -196,7 +196,7 @@ final class CameraManager: NSObject, ObservableObject {
 // MARK: - AVCaptureSessionControlsDelegate
 extension CameraManager: AVCaptureSessionControlsDelegate {
     nonisolated func sessionControlsDidBecomeActive(_ session: AVCaptureSession) {
-        print("CAM: controls became ACTIVE")
+
         Task { @MainActor in
             self.controlsActive = true
             self.appendLog("controls became ACTIVE")
@@ -216,7 +216,7 @@ extension CameraManager: AVCaptureSessionControlsDelegate {
     }
 
     nonisolated func sessionControlsDidBecomeInactive(_ session: AVCaptureSession) {
-        print("CAM: controls became inactive")
+
         Task { @MainActor in
             self.controlsActive = false
             self.appendLog("controls became inactive")
