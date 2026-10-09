@@ -43,6 +43,12 @@ platform :ios do
     deliver(
       api_key: api_key,
       force: true,
+      precheck_include_in_app_purchases: false,
+      copyright: "2026 Zack Ebenfeld",
+      # NOTE: pricing is set in the App Store Connect web UI (Prices and
+      # Availability) — Apple retired the API fastlane uses for it.
+      primary_category: "Games",
+      primary_first_sub_category: "Arcade",
       metadata_path: File.expand_path("../fastlane/metadata", __dir__),
       screenshots_path: File.expand_path("../fastlane/screenshots", __dir__),
       overwrite_screenshots: true,
@@ -57,7 +63,8 @@ platform :ios do
       app_review_information: {
         first_name: "Zachary",
         last_name: "Ebenfeld",
-        email_address: "zackebenfeld@gmail.com"
+        email_address: "zackebenfeld@gmail.com",
+        phone_number: "+19545931670"
       },
       app_rating_config_path: File.expand_path("../fastlane/rating.json", __dir__)
     )
